@@ -1,0 +1,142 @@
+#include <stdio.h>
+#include <conio.h>
+#include <time.h>
+#include <stdlib.h>
+
+clock_t t, p;
+void merge(int arr[], int p, int q, int r)
+{
+
+    int n1 = q - p + 1;
+    int n2 = r - q;
+
+    int L[n1], M[n2];
+
+    for (int i = 0; i < n1; i++)
+        L[i] = arr[p + i];
+    for (int j = 0; j < n2; j++)
+        M[j] = arr[q + 1 + j];
+
+    int i, j, k;
+    i = 0;
+    j = 0;
+    k = p;
+
+    while (i < n1 && j < n2)
+    {
+        if (L[i] <= M[j])
+        {
+            arr[k] = L[i];
+            i++;
+        }
+        else
+        {
+            arr[k] = M[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1)
+    {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2)
+    {
+        arr[k] = M[j];
+        j++;
+        k++;
+    }
+}
+
+void mergeSort(int arr[], int l, int r)
+{
+    t = clock();
+    if (l < r)
+    {
+        int m = l + (r - l) / 2;
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+        merge(arr, l, m, r);
+        t = clock() - t;
+    }
+}
+void RandtoDescend(int arr[], int n)
+{
+
+    for (int step = 1; step < n; step++)
+    {
+        int key = arr[step];
+        int j = step - 1;
+        while (key > arr[j] && j >= 0)
+        {
+
+            arr[j + 1] = arr[j];
+            --j;
+        }
+        arr[j + 1] = key;
+    }
+}
+void printarr(int arr[], int n)
+{
+    printf("array generated is :");
+    for (int i = 0; i < n; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+}
+int main()
+{
+    int n, x;
+    printf("enter size of array");
+    scanf("%d", &n);
+    int arr[n];
+    for (int i = 0; i < n; i++)
+    {
+        arr[i] = rand() % 100;
+    }
+    do
+    {
+        printf("\n **MENU** \n 0> Quit \n 1>sort in ascending \n 2>sort ascending to ascending \n 3> sort descending to ascending \n 4> print the array ");
+        int x;
+        printf(" \n enter your choice :");
+        scanf("%d", &x);
+        
+        switch (x)
+        {
+        case 0:
+            return 0;
+            break;
+        case 1:
+            mergeSort(arr, 0, n - 1);
+            double timetaken = ((double)t) / CLOCKS_PER_SEC;
+            printf("\ntime taken is \n");
+            printf("%f", timetaken);
+            break;
+        case 2:
+
+            mergeSort(arr, 0, n - 1);
+            timetaken = ((double)p) / CLOCKS_PER_SEC;
+            printf("\ntime taken is \n");
+            printf("%f", timetaken);
+            break;
+        case 3:
+            RandtoDescend(arr, n);
+            mergeSort(arr, 0, n - 1);
+            timetaken = ((double)t) / CLOCKS_PER_SEC;
+            printf("\ntime taken is \n");
+            printf("%f", timetaken);
+            break;
+
+        case 4:
+            printarr(arr, n);
+            break;
+        default:
+            printf("enter right choice :)");
+            break;
+        }
+    } while (1);
+}
